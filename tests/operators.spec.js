@@ -1,25 +1,25 @@
 const Operators = require('../operators.js');
-import assert from 'assert';
 
 describe('Addition operation:', () => {
 
   it('Addition test success:', () => {
-    assert.equal(Operators.addition(2, 2), 4);
+    expect(Operators.addition(2, 2)).toBe(4);
   });
 
   it('Addition test with not a numerical value:', () => {
-    assert.equal(Operators.addition('2', '2'), null);
+    expect(Operators.addition('2', '2')).toBe(null);
   });
 });
+
 
 describe('Subtraction operation:', () => {
 
   it('Subtraction test success:', () => {
-    assert.equal(Operators.subtraction(6, 2), 4);
+    expect(Operators.subtraction(6, 2)).toBe(4);
   });
 
   it('Subtraction test with not a numerical value::', () => {
-    assert.equal(Operators.subtraction(true, '3'), null);
+    expect(Operators.subtraction(true, '3')).toBe(null);
   });
 
 });
@@ -27,11 +27,11 @@ describe('Subtraction operation:', () => {
 describe('Multiplication operation:', () => {
 
   it('Multiplication test success:', () => {
-    assert.equal(Operators.multiplication(3, 2), 6);
+    expect(Operators.multiplication(3, 2)).toBe(6);
   });
 
   it('Multiplication test with not a numerical value:', () => {
-    assert.equal(Operators.multiplication(true, '3'), null);
+    expect(Operators.multiplication(true, '3')).toBe(null);
   });
 
 });
@@ -39,15 +39,15 @@ describe('Multiplication operation:', () => {
 describe('Division operation:', () => {
 
   it('Division test success:', () => {
-    assert.equal(Operators.division(6, 2), 3);
+    expect(Operators.division(6, 2)).toBe(3);
   });
 
   it('Division test with not a numerical value:', () => {
-    assert.equal(Operators.division(true, '3'), null);
+    expect(Operators.division(true, '3')).toBe(null);
   });
 
   it('Division test with division by zero:', () => {
-    assert.equal(Operators.division(1, 0), null);
+    expect(Operators.division(1, 0)).toBe(null);
   });
 
 });
@@ -56,12 +56,12 @@ describe('Constructor of operators:', () => {
 
   it('Create Operators object success:', () => {
     let div = document.createElement('div');
-    assert.equal(new Operators(div) instanceof Operators, true);
+    expect(new Operators(div) instanceof Operators).toBe(true);
   });
 
   it('Create Operators object with no valid parameter:', () => {
     let testObj = new Operators("test");
-    assert.equal(testObj.board, undefined);
+    expect(testObj.board).toBe(undefined);
   });
 
 });
@@ -73,12 +73,12 @@ describe('Clear board test:', () => {
     let testObj = new Operators(div);
     testObj.board.innerHTML = '';
     testObj.clearBoard();
-    assert.equal(testObj.board.innerHTML, '0');
+    expect(testObj.board.innerHTML).toBe('0');
   });
 
   it('Clear not valid board:', () => {
     let testObj = new Operators();
-    assert.equal(testObj.clearBoard(), null);
+    expect(testObj.clearBoard()).toBe(null);
   });
 
 });
@@ -89,27 +89,74 @@ describe('CheckForClear test:', () => {
     let div = document.createElement('div');
     let testObj = new Operators(div);
     testObj.checkForClear()
-    assert.equal(testObj.needClear, false);
+    expect(testObj.needClear).toBe(false);
   });
 
   it('CheckForClear success x2:', () => {
     let div = document.createElement('div');
     let testObj = new Operators(div);
     testObj.needClear = false;
-    assert.equal(testObj.checkForClear(), undefined);
+    expect(testObj.checkForClear()).toBe(undefined);
   })
 
 });
 
 describe('CheckForClear test:', () => {
 
-  it('operatorButton whith "=" parameter end empty success:', () => {
+  it('operatorButton whith "=" parameter and empty return null:', () => {
     let div = document.createElement('div');
     div.innerHTML = '=';
-    let event = document.createEvent('Event');
     let testObj = new Operators(document.createElement('div'));
-    div.addEventListener('click', ()=> {
-      assert.equal(testObj.operatorButton(event), null);
+    div.addEventListener('click', (event)=> {
+      expect(testObj.operatorButton(event)).toBe(null);
+    });
+    div.click();
+  });
+
+  it('operatorButton whith "+" parameter and value success:', () => {
+    let div = document.createElement('div');
+    div.innerHTML = '+';
+    let board = document.createElement('div')
+    board.innerHTML = '5'
+    let testObj = new Operators(board);
+    div.addEventListener('click', (event)=> {
+      expect(testObj.operatorButton(event)).toBe(undefined);
+    });
+    div.click();
+  });
+
+  it('operatorButton whith double "+" parameter:', () => {
+    let div = document.createElement('div');
+    div.innerHTML = '+';
+    let board = document.createElement('div')
+    let testObj = new Operators(board);
+    testObj.currentOperator = '+'
+    div.addEventListener('click', (event)=> {
+      expect(testObj.operatorButton(event)).toBe(undefined);
+    });
+    div.click();
+  });
+
+  it('operatorButton whith "+" and "=" parameters and empty value:', () => {
+    let div = document.createElement('div');
+    div.innerHTML = '=';
+    let board = document.createElement('div')
+    let testObj = new Operators(board);
+    testObj.currentOperator = '+';
+    div.addEventListener('click', (event)=> {
+      expect(testObj.operatorButton(event)).toBe(undefined);
+    });
+    div.click();
+  });
+
+  it('operatorButton whith "+" and "-" parameters and empty value:', () => {
+    let div = document.createElement('div');
+    div.innerHTML = '-';
+    let board = document.createElement('div')
+    let testObj = new Operators(board);
+    testObj.currentOperator = '+';
+    div.addEventListener('click', (event)=> {
+      expect(testObj.operatorButton(event)).toBe(undefined);
     });
     div.click();
   });

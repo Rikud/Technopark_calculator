@@ -14,10 +14,10 @@
     this.firstNumber = 0;
     this.secondNumber = 0;
     this.operators = {
-      '+': this.addition,
-      '-': this.subtraction,
-      '÷': this.division,
-      'x': this.multiplication
+      '+': Operators.addition,
+      '-': Operators.subtraction,
+      '÷': Operators.division,
+      'x': Operators.multiplication
     }
     this.needClear = true;
   }
@@ -46,11 +46,11 @@
   operatorButton(event) {
     let newOperator = event.target.innerHTML;
     if (this.currentOperator === '') {
-      if (newOperator === '=') {
+      this.firstNumber = parseInt(this.board.innerHTML);
+      if (newOperator === '=' || isNaN(this.firstNumber)) {
         return null;
       }
       this.currentOperator = newOperator;
-      this.firstNumber = parseInt(this.board.innerHTML);
       this.needClear = true;
     } else {
       if (newOperator === this.currentOperator) {
